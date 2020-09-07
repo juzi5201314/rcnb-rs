@@ -48,7 +48,28 @@ jobs:
 
       - name: install musl-tools
         run: sudo apt-get install -y musl-tools
-
+      
+      - name: install docker
+        run: sudo apt-get install -y docker.io
+      
+      - run: sudo systemctl start docker
+    
+      - name: install cross
+        run: cargo install --force cross
+    
+      - name: build aarch64-linux-musl
+        run: cross install --release --target=aarch64-unknown-linux-musl
+    
+      - name: Upload aarch64-linux-musl
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/aarch64-unknown-linux-musl/release/rcnb-rs
+          asset_name: aarch64-linux-musl-${{steps.get_release.outputs.tag_name}}-rcnb-rs
+          asset_content_type: application/octet-stream
+    
       - name: install musl target
         run: rustup target add x86_64-unknown-linux-musl
 
