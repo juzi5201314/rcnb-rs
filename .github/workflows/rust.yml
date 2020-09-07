@@ -1,0 +1,23 @@
+name: Rust bench
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+      - name: bench
+        run: RUSTFLAGS="-C target-cpu=native" cargo +nightly bench --test bench
