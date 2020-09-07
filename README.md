@@ -1,4 +1,8 @@
-# rcnb-rs ![Node.js CI](https://github.com/juzi5201314/rcnb-rs/workflows/bench/badge.svg)
+# rcnb-rs 
+
+![Node.js CI](https://github.com/juzi5201314/rcnb-rs/workflows/bench/badge.svg)
+[![Rayon crate](https://img.shields.io/crates/v/rcnb-rs.svg)](https://crates.io/crates/rcnb-rs)
+[![Rayon documentation](https://docs.rs/rcnb-rs/badge.svg)](https://docs.rs/rcnb-rs)
 
 The world is based on RC. Thus, *everything* can be encoded into RCNB.
 
