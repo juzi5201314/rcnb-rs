@@ -1,9 +1,10 @@
 [package]
 name = "soeur/rcnb-rs"
-version = "0.1.1"
+version = "0.1.2"
 description = "Everything can be encoded into RCNB with Rust"
 license = "MIT"
 repository = "https://github.com/juzi5201314/rcnb-rs"
+readme = "README.md"
 
 [dependencies]
 "soeur/rcnb-rs" = "0.1.1"
