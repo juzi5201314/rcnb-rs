@@ -49,265 +49,6 @@ jobs:
       - name: install musl-tools
         run: sudo apt-get install -y musl-tools
 
-      - run: sudo systemctl start docker
-
-      - name: install cross
-        run: cargo install --force cross
-
-      # Cross compile aarch64-unknown-linux-gnu
-      - name: build aarch64-unknown-linux-gnu
-        run: cross build --release --target=aarch64-unknown-linux-gnu
-
-      - name: Upload aarch64-unknown-linux-gnu
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/aarch64-unknown-linux-gnu/release/rcnb-rs
-          asset_name: aarch64-unknown-linux-gnu-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile aarch64-unknown-linux-musl
-      - name: build aarch64-unknown-linux-musl
-        run: cross build --release --target=aarch64-unknown-linux-musl
-
-      - name: Upload aarch64-unknown-linux-musl
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/aarch64-unknown-linux-musl/release/rcnb-rs
-          asset_name: aarch64-unknown-linux-musl-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile arm-unknown-linux-musleabi
-      - name: build arm-unknown-linux-musleabi
-        run: cross build --release --target=arm-unknown-linux-musleabi
-
-      - name: Upload arm-unknown-linux-musleabi
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/arm-unknown-linux-musleabi/release/rcnb-rs
-          asset_name: arm-unknown-linux-musleabi-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile arm-unknown-linux-musleabihf
-      - name: build arm-unknown-linux-musleabihf
-        run: cross build --release --target=arm-unknown-linux-musleabihf
-
-      - name: Upload arm-unknown-linux-musleabihf
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/arm-unknown-linux-musleabihf/release/rcnb-rs
-          asset_name: arm-unknown-linux-musleabihf-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile armv5te-unknown-linux-musleabi
-      - name: build armv5te-unknown-linux-musleabi
-        run: cross build --release --target=armv5te-unknown-linux-musleabi
-
-      - name: Upload armv5te-unknown-linux-musleabi
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/armv5te-unknown-linux-musleabi/release/rcnb-rs
-          asset_name: armv5te-unknown-linux-musleabi-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile armv7-unknown-linux-musleabihf
-      - name: build armv7-unknown-linux-musleabihf
-        run: cross build --release --target=armv7-unknown-linux-musleabihf
-
-      - name: Upload armv7-unknown-linux-musleabihf
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/armv7-unknown-linux-musleabihf/release/rcnb-rs
-          asset_name: armv7-unknown-linux-musleabihf-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile i586-unknown-linux-musl
-      - name: build i586-unknown-linux-musl
-        run: cross build --release --target=i586-unknown-linux-musl
-
-      - name: Upload i586-unknown-linux-musl
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/i586-unknown-linux-musl/release/rcnb-rs
-          asset_name: i586-unknown-linux-musl-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile i686-unknown-linux-musl
-      - name: build i686-unknown-linux-musl
-        run: cross build --release --target=i686-unknown-linux-musl
-
-      - name: Upload i686-unknown-linux-musl
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/i686-unknown-linux-musl/release/rcnb-rs
-          asset_name: i686-unknown-linux-musl-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile mips-unknown-linux-musl
-      - name: build mips-unknown-linux-musl
-        run: cross build --release --target=mips-unknown-linux-musl
-
-      - name: Upload mips-unknown-linux-musl
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/mips-unknown-linux-musl/release/rcnb-rs
-          asset_name: mips-unknown-linux-musl-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile mipsel-unknown-linux-musl
-      - name: build mipsel-unknown-linux-musl
-        run: cross build --release --target=mipsel-unknown-linux-musl
-
-      - name: Upload mipsel-unknown-linux-musl
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/mipsel-unknown-linux-musl/release/rcnb-rs
-          asset_name: mipsel-unknown-linux-musl-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile powerpc-unknown-linux-gnu
-      - name: build powerpc-unknown-linux-gnu
-        run: cross build --release --target=powerpc-unknown-linux-gnu
-
-      - name: Upload powerpc-unknown-linux-gnu
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/powerpc-unknown-linux-gnu/release/rcnb-rs
-          asset_name: powerpc-unknown-linux-gnu-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile riscv64gc-unknown-linux-gnu
-      - name: build riscv64gc-unknown-linux-gnu
-        run: cross build --release --target=riscv64gc-unknown-linux-gnu
-
-      - name: Upload riscv64gc-unknown-linux-gnu
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/riscv64gc-unknown-linux-gnu/release/rcnb-rs
-          asset_name: riscv64gc-unknown-linux-gnu-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile s390x-unknown-linux-gnu
-      - name: build s390x-unknown-linux-gnu
-        run: cross build --release --target=s390x-unknown-linux-gnu
-
-      - name: Upload s390x-unknown-linux-gnu
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/s390x-unknown-linux-gnu/release/rcnb-rs
-          asset_name: s390x-unknown-linux-gnu-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile thumbv6m-none-eabi
-      - name: build thumbv6m-none-eabi
-        run: cross build --release --target=thumbv6m-none-eabi
-
-      - name: Upload thumbv6m-none-eabi
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/thumbv6m-none-eabi/release/rcnb-rs
-          asset_name: thumbv6m-none-eabi-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile thumbv7em-none-eabi
-      - name: build thumbv7em-none-eabi
-        run: cross build --release --target=thumbv7em-none-eabi
-
-      - name: Upload thumbv7em-none-eabi
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/thumbv7em-none-eabi/release/rcnb-rs
-          asset_name: thumbv7em-none-eabi-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile thumbv7em-none-eabihf
-      - name: build thumbv7em-none-eabihf
-        run: cross build --release --target=thumbv7em-none-eabihf
-
-      - name: Upload thumbv7em-none-eabihf
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/thumbv7em-none-eabihf/release/rcnb-rs
-          asset_name: thumbv7em-none-eabihf-rcnb-rs
-          asset_content_type: application/octet-stream
-
-
-      # Cross compile thumbv7m-none-eabi
-      - name: build thumbv7m-none-eabi
-        run: cross build --release --target=thumbv7m-none-eabi
-
-      - name: Upload thumbv7m-none-eabi
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/thumbv7m-none-eabi/release/rcnb-rs
-          asset_name: thumbv7m-none-eabi-rcnb-rs
-          asset_content_type: application/octet-stream
-
       - name: install musl target
         run: rustup target add x86_64-unknown-linux-musl
 
@@ -344,4 +85,469 @@ jobs:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./target/wasm32-wasi/release/rcnb-rs.wasm
           asset_name: wasm32-wasi-rcnb-rs.wasm
+          asset_content_type: application/octet-stream
+
+  release-aarch64-unknown-linux-gnu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile aarch64-unknown-linux-gnu
+      - name: build aarch64-unknown-linux-gnu
+        run: cross build --release --target=aarch64-unknown-linux-gnu
+
+      - name: Upload aarch64-unknown-linux-gnu
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/aarch64-unknown-linux-gnu/release/rcnb-rs
+          asset_name: aarch64-unknown-linux-gnu-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-aarch64-unknown-linux-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile aarch64-unknown-linux-musl
+      - name: build aarch64-unknown-linux-musl
+        run: cross build --release --target=aarch64-unknown-linux-musl
+
+      - name: Upload aarch64-unknown-linux-musl
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/aarch64-unknown-linux-musl/release/rcnb-rs
+          asset_name: aarch64-unknown-linux-musl-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-arm-unknown-linux-musleabi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile arm-unknown-linux-musleabi
+      - name: build arm-unknown-linux-musleabi
+        run: cross build --release --target=arm-unknown-linux-musleabi
+
+      - name: Upload arm-unknown-linux-musleabi
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/arm-unknown-linux-musleabi/release/rcnb-rs
+          asset_name: arm-unknown-linux-musleabi-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-arm-unknown-linux-musleabihf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile arm-unknown-linux-musleabihf
+      - name: build arm-unknown-linux-musleabihf
+        run: cross build --release --target=arm-unknown-linux-musleabihf
+
+      - name: Upload arm-unknown-linux-musleabihf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/arm-unknown-linux-musleabihf/release/rcnb-rs
+          asset_name: arm-unknown-linux-musleabihf-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-armv5te-unknown-linux-musleabi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile armv5te-unknown-linux-musleabi
+      - name: build armv5te-unknown-linux-musleabi
+        run: cross build --release --target=armv5te-unknown-linux-musleabi
+
+      - name: Upload armv5te-unknown-linux-musleabi
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/armv5te-unknown-linux-musleabi/release/rcnb-rs
+          asset_name: armv5te-unknown-linux-musleabi-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-armv7-unknown-linux-musleabihf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile armv7-unknown-linux-musleabihf
+      - name: build armv7-unknown-linux-musleabihf
+        run: cross build --release --target=armv7-unknown-linux-musleabihf
+
+      - name: Upload armv7-unknown-linux-musleabihf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/armv7-unknown-linux-musleabihf/release/rcnb-rs
+          asset_name: armv7-unknown-linux-musleabihf-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-i586-unknown-linux-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile i586-unknown-linux-musl
+      - name: build i586-unknown-linux-musl
+        run: cross build --release --target=i586-unknown-linux-musl
+
+      - name: Upload i586-unknown-linux-musl
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/i586-unknown-linux-musl/release/rcnb-rs
+          asset_name: i586-unknown-linux-musl-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-i686-unknown-linux-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile i686-unknown-linux-musl
+      - name: build i686-unknown-linux-musl
+        run: cross build --release --target=i686-unknown-linux-musl
+
+      - name: Upload i686-unknown-linux-musl
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/i686-unknown-linux-musl/release/rcnb-rs
+          asset_name: i686-unknown-linux-musl-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-mips-unknown-linux-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile mips-unknown-linux-musl
+      - name: build mips-unknown-linux-musl
+        run: cross build --release --target=mips-unknown-linux-musl
+
+      - name: Upload mips-unknown-linux-musl
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/mips-unknown-linux-musl/release/rcnb-rs
+          asset_name: mips-unknown-linux-musl-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-mipsel-unknown-linux-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile mipsel-unknown-linux-musl
+      - name: build mipsel-unknown-linux-musl
+        run: cross build --release --target=mipsel-unknown-linux-musl
+
+      - name: Upload mipsel-unknown-linux-musl
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/mipsel-unknown-linux-musl/release/rcnb-rs
+          asset_name: mipsel-unknown-linux-musl-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-powerpc-unknown-linux-gnu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile powerpc-unknown-linux-gnu
+      - name: build powerpc-unknown-linux-gnu
+        run: cross build --release --target=powerpc-unknown-linux-gnu
+
+      - name: Upload powerpc-unknown-linux-gnu
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/powerpc-unknown-linux-gnu/release/rcnb-rs
+          asset_name: powerpc-unknown-linux-gnu-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-riscv64gc-unknown-linux-gnu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile riscv64gc-unknown-linux-gnu
+      - name: build riscv64gc-unknown-linux-gnu
+        run: cross build --release --target=riscv64gc-unknown-linux-gnu
+
+      - name: Upload riscv64gc-unknown-linux-gnu
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/riscv64gc-unknown-linux-gnu/release/rcnb-rs
+          asset_name: riscv64gc-unknown-linux-gnu-rcnb-rs
+          asset_content_type: application/octet-stream
+
+
+
+
+  release-s390x-unknown-linux-gnu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: sudo systemctl start docker
+
+      - name: install cross
+        run: cargo install --force cross
+
+      # Cross compile s390x-unknown-linux-gnu
+      - name: build s390x-unknown-linux-gnu
+        run: cross build --release --target=s390x-unknown-linux-gnu
+
+      - name: Upload s390x-unknown-linux-gnu
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./target/s390x-unknown-linux-gnu/release/rcnb-rs
+          asset_name: s390x-unknown-linux-gnu-rcnb-rs
           asset_content_type: application/octet-stream
