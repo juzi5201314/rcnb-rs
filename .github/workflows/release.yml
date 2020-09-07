@@ -49,9 +49,6 @@ jobs:
       - name: install musl-tools
         run: sudo apt-get install -y musl-tools
       
-      - name: install docker
-        run: sudo apt-get install -y docker.io
-      
       - run: sudo systemctl start docker
     
       - name: install cross
