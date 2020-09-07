@@ -2,7 +2,7 @@ name: release
 
 on:
   release:
-    types: [published, edited]
+    types: [published]
 
 jobs:
   release-win:
@@ -28,7 +28,7 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./target/release/rcnb-rs.exe
-          asset_name: x86_64-windows-${{ steps.get_release.outputs.tag_name }}-rcnb-rs.exe
+          asset_name: x86_64-windows-rcnb-rs.exe
           asset_content_type: application/octet-stream
 
   release:
@@ -55,7 +55,7 @@ jobs:
         run: cargo install --force cross
     
       - name: build aarch64-linux-musl
-        run: cross install --release --target=aarch64-unknown-linux-musl
+        run: cross build --release --target=aarch64-unknown-linux-musl
     
       - name: Upload aarch64-linux-musl
         uses: actions/upload-release-asset@v1.0.2
@@ -64,7 +64,7 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./target/aarch64-unknown-linux-musl/release/rcnb-rs
-          asset_name: aarch64-linux-musl-${{steps.get_release.outputs.tag_name}}-rcnb-rs
+          asset_name: aarch64-linux-musl-rcnb-rs
           asset_content_type: application/octet-stream
     
       - name: install musl target
@@ -80,7 +80,7 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./target/x86_64-unknown-linux-musl/release/rcnb-rs
-          asset_name: x86_64-linux-musl-${{steps.get_release.outputs.tag_name}}-rcnb-rs
+          asset_name: x86_64-linux-musl-rcnb-rs
           asset_content_type: application/octet-stream
 
       - name: install wasi target
@@ -96,5 +96,5 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./target/wasm32-wasi/release/rcnb-rs.wasm
-          asset_name: wasm32-wasi-${{ steps.get_release.outputs.tag_name }}-rcnb-rs.wasm
+          asset_name: wasm32-wasi-rcnb-rs.wasm
           asset_content_type: application/octet-stream
