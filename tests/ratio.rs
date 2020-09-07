@@ -1,5 +1,5 @@
 use paste::paste;
-use rcnb_rs::encode_str;
+use rcnb_rs::encode;
 use rand::Rng;
 use byte_unit::Byte;
 
@@ -11,8 +11,7 @@ macro_rules! gen_ratio {
                 fn [<test $size _ratio>]() {
                     let size = Byte::from_str($size).unwrap().get_bytes();
                     let data = rand::thread_rng().sample_iter(rand::distributions::Alphanumeric).take(size as usize).collect::<String>();
-                    let res = encode_str(&data);
-                    rcnb_rs::decode(&res);
+                    let res = encode(&data);
                     let ratio = res.len() as f64 / data.len() as f64;
                     println!("{} data, ratio: {}", $size, ratio)
                 }
