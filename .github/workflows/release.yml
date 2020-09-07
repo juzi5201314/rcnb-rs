@@ -8,13 +8,16 @@ jobs:
   release-win:
     runs-on: windows-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1.0.6
         with:
           toolchain: nightly
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
@@ -27,13 +30,16 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/release/rcnb-rs.exe
-          asset_name: x86_64-windows-rcnb-rs.exe
+          asset_path: ./target/release/${{ REPOSITORY_NAME }}.exe
+          asset_name: x86_64-windows-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}.exe
           asset_content_type: application/octet-stream
 
   release:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -42,7 +48,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
@@ -61,8 +67,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/x86_64-unknown-linux-musl/release/rcnb-rs
-          asset_name: x86_64-linux-musl-rcnb-rs
+          asset_path: ./target/x86_64-unknown-linux-musl/release/${{ REPOSITORY_NAME }}
+          asset_name: x86_64-linux-musl-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
       - name: install wasi target
@@ -75,7 +81,7 @@ jobs:
         run: cargo install --force wasm-gc
 
       - name: run wasm-gc
-        run: wasm-gc ./target/wasm32-wasi/release/rcnb-rs.wasm
+        run: wasm-gc ./target/wasm32-wasi/release/${{ REPOSITORY_NAME }}.wasm
 
       - name: Upload wasm
         uses: actions/upload-release-asset@v1.0.2
@@ -83,13 +89,16 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/wasm32-wasi/release/rcnb-rs.wasm
-          asset_name: wasm32-wasi-rcnb-rs.wasm
+          asset_path: ./target/wasm32-wasi/release/${{ REPOSITORY_NAME }}.wasm
+          asset_name: wasm32-wasi-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}.wasm
           asset_content_type: application/octet-stream
 
   release-aarch64-unknown-linux-gnu:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -98,7 +107,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -116,8 +125,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/aarch64-unknown-linux-gnu/release/rcnb-rs
-          asset_name: aarch64-unknown-linux-gnu-rcnb-rs
+          asset_path: ./target/aarch64-unknown-linux-gnu/release/${{ REPOSITORY_NAME }}
+          asset_name: aarch64-unknown-linux-gnu-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -126,6 +135,9 @@ jobs:
   release-aarch64-unknown-linux-musl:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -134,7 +146,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -152,8 +164,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/aarch64-unknown-linux-musl/release/rcnb-rs
-          asset_name: aarch64-unknown-linux-musl-rcnb-rs
+          asset_path: ./target/aarch64-unknown-linux-musl/release/${{ REPOSITORY_NAME }}
+          asset_name: aarch64-unknown-linux-musl-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -162,6 +174,9 @@ jobs:
   release-arm-unknown-linux-musleabi:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -170,7 +185,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -188,8 +203,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/arm-unknown-linux-musleabi/release/rcnb-rs
-          asset_name: arm-unknown-linux-musleabi-rcnb-rs
+          asset_path: ./target/arm-unknown-linux-musleabi/release/${{ REPOSITORY_NAME }}
+          asset_name: arm-unknown-linux-musleabi-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -198,6 +213,9 @@ jobs:
   release-arm-unknown-linux-musleabihf:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -206,7 +224,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -224,8 +242,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/arm-unknown-linux-musleabihf/release/rcnb-rs
-          asset_name: arm-unknown-linux-musleabihf-rcnb-rs
+          asset_path: ./target/arm-unknown-linux-musleabihf/release/${{ REPOSITORY_NAME }}
+          asset_name: arm-unknown-linux-musleabihf-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -234,6 +252,9 @@ jobs:
   release-armv5te-unknown-linux-musleabi:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -242,7 +263,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -260,8 +281,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/armv5te-unknown-linux-musleabi/release/rcnb-rs
-          asset_name: armv5te-unknown-linux-musleabi-rcnb-rs
+          asset_path: ./target/armv5te-unknown-linux-musleabi/release/${{ REPOSITORY_NAME }}
+          asset_name: armv5te-unknown-linux-musleabi-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -270,6 +291,9 @@ jobs:
   release-armv7-unknown-linux-musleabihf:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -278,7 +302,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -296,8 +320,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/armv7-unknown-linux-musleabihf/release/rcnb-rs
-          asset_name: armv7-unknown-linux-musleabihf-rcnb-rs
+          asset_path: ./target/armv7-unknown-linux-musleabihf/release/${{ REPOSITORY_NAME }}
+          asset_name: armv7-unknown-linux-musleabihf-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -306,6 +330,9 @@ jobs:
   release-i586-unknown-linux-musl:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -314,7 +341,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -332,8 +359,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/i586-unknown-linux-musl/release/rcnb-rs
-          asset_name: i586-unknown-linux-musl-rcnb-rs
+          asset_path: ./target/i586-unknown-linux-musl/release/${{ REPOSITORY_NAME }}
+          asset_name: i586-unknown-linux-musl-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -342,6 +369,9 @@ jobs:
   release-i686-unknown-linux-musl:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -350,7 +380,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -368,8 +398,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/i686-unknown-linux-musl/release/rcnb-rs
-          asset_name: i686-unknown-linux-musl-rcnb-rs
+          asset_path: ./target/i686-unknown-linux-musl/release/${{ REPOSITORY_NAME }}
+          asset_name: i686-unknown-linux-musl-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -378,6 +408,9 @@ jobs:
   release-mips-unknown-linux-musl:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -386,7 +419,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -404,8 +437,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/mips-unknown-linux-musl/release/rcnb-rs
-          asset_name: mips-unknown-linux-musl-rcnb-rs
+          asset_path: ./target/mips-unknown-linux-musl/release/${{ REPOSITORY_NAME }}
+          asset_name: mips-unknown-linux-musl-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -414,6 +447,9 @@ jobs:
   release-mipsel-unknown-linux-musl:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -422,7 +458,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -440,8 +476,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/mipsel-unknown-linux-musl/release/rcnb-rs
-          asset_name: mipsel-unknown-linux-musl-rcnb-rs
+          asset_path: ./target/mipsel-unknown-linux-musl/release/${{ REPOSITORY_NAME }}
+          asset_name: mipsel-unknown-linux-musl-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -450,6 +486,9 @@ jobs:
   release-powerpc-unknown-linux-gnu:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -458,7 +497,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -476,8 +515,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/powerpc-unknown-linux-gnu/release/rcnb-rs
-          asset_name: powerpc-unknown-linux-gnu-rcnb-rs
+          asset_path: ./target/powerpc-unknown-linux-gnu/release/${{ REPOSITORY_NAME }}
+          asset_name: powerpc-unknown-linux-gnu-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -486,6 +525,9 @@ jobs:
   release-riscv64gc-unknown-linux-gnu:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -494,7 +536,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -512,8 +554,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/riscv64gc-unknown-linux-gnu/release/rcnb-rs
-          asset_name: riscv64gc-unknown-linux-gnu-rcnb-rs
+          asset_path: ./target/riscv64gc-unknown-linux-gnu/release/${{ REPOSITORY_NAME }}
+          asset_name: riscv64gc-unknown-linux-gnu-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
 
 
@@ -522,6 +564,9 @@ jobs:
   release-s390x-unknown-linux-gnu:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+        shell: bash
+
       - uses: actions/checkout@v2
 
       - uses: actions-rs/toolchain@v1.0.6
@@ -530,7 +575,7 @@ jobs:
 
       - name: Get release
         id: get_release
-        uses: bruceadams/get-release@v1.2.0
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: sudo systemctl start docker
@@ -548,6 +593,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./target/s390x-unknown-linux-gnu/release/rcnb-rs
-          asset_name: s390x-unknown-linux-gnu-rcnb-rs
+          asset_path: ./target/s390x-unknown-linux-gnu/release/${{ REPOSITORY_NAME }}
+          asset_name: s390x-unknown-linux-gnu-${{ steps.get_release.outputs.tag_name }}-${{ REPOSITORY_NAME }}
           asset_content_type: application/octet-stream
