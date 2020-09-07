@@ -2,7 +2,7 @@ name: release
 
 on:
   release:
-    types: [published]
+    types: [published, edited]
 
 jobs:
   release-win:
@@ -62,7 +62,7 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./target/x86_64-unknown-linux-musl/release/rcnb-rs
-          asset_name: x86_64-linux-musl-${{ steps.get_release.outputs.tag_name }}-rcnb-rs
+          asset_name: x86_64-linux-musl-${{steps.get_release.outputs.tag_name}}-rcnb-rs
           asset_content_type: application/octet-stream
 
       - name: install wasi target
