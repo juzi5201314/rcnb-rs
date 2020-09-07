@@ -18,6 +18,9 @@ RCNB is available in various languages: **Rust** [JavaScript](https://github.com
 ## Install
 
 ### Use [Wapm](https://wapm.io/) (with [Wasmer](https://wasmer.io/))
+package: [soeur/rcnb-rs](https://wapm.io/package/soeur/rcnb-rs)
+
+[online playground](https://webassembly.sh/?run-command=wapm%20install%20soeur/rcnb-rs)
 ```bash
 $ wapm install soeur/rcnb-rs
 ```
