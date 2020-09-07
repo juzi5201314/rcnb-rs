@@ -95,3 +95,19 @@ $ cat test.txt | rcnb-rs
 or
 $ rcnb-rs <test.txt
 ```
+
+## Performance
+[See here](https://github.com/juzi5201314/rcnb-rs/runs/1080439498?check_suite_focus=true#step:4:64)
+```
+test rcnb_decode_100kib ... bench:   8,790,362 ns/iter (+/- 580,993)
+test rcnb_decode_10kib  ... bench:     854,595 ns/iter (+/- 3,302)
+test rcnb_decode_1b     ... bench:         100 ns/iter (+/- 1)
+test rcnb_decode_1kib   ... bench:      82,904 ns/iter (+/- 687)
+test rcnb_decode_1mib   ... bench:  85,638,637 ns/iter (+/- 143,395)
+
+test rcnb_encode_100kib ... bench:   2,520,610 ns/iter (+/- 23,195)
+test rcnb_encode_10kib  ... bench:     254,751 ns/iter (+/- 3,072)
+test rcnb_encode_1b     ... bench:          69 ns/iter (+/- 1)
+test rcnb_encode_1kib   ... bench:      25,393 ns/iter (+/- 282)
+test rcnb_encode_1mib   ... bench:  25,803,506 ns/iter (+/- 134,612)
+```
