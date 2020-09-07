@@ -330,6 +330,12 @@ jobs:
       - name: build wasm
         run: cargo build --release --target=wasm32-wasi
 
+      - name: install wasm-gc
+        run: cargo install --force wasm-gc
+
+      - name: run wasm-gc
+        run: wasm-gc ./target/wasm32-wasi/release/rcnb-rs.wasm
+
       - name: Upload wasm
         uses: actions/upload-release-asset@v1.0.2
         env:
