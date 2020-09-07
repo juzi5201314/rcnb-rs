@@ -1,0 +1,21 @@
+[package]
+name = "soeur/rcnb-rs"
+version = "0.1.1"
+description = "Everything can be encoded into RCNB with Rust"
+license = "MIT"
+repository = "https://github.com/juzi5201314/rcnb-rs"
+
+[dependencies]
+"soeur/rcnb-rs" = "0.1.1"
+
+[[module]]
+name = "rcnb-rs"
+source = "target/wasm32-wasi/release/rcnb-rs.wasm"
+abi = "wasi"
+
+[module.interfaces]
+wasi = "0.1.0-unstable"
+
+[[command]]
+name = "rcnb-rs"
+module = "rcnb-rs"
