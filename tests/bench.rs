@@ -20,6 +20,7 @@ macro_rules! gen_bench {
                     b.iter(|| {
                         let _ = encode(test::black_box(data.as_bytes()));
                     });
+		    b.bytes = data.len() as u64;
                 }
 
                 #[bench]
@@ -29,6 +30,7 @@ macro_rules! gen_bench {
                     b.iter(|| {
                         let _ = decode(test::black_box(&data));
                     });
+		    b.bytes = data.len() as u64;
                 }
             );
         )+
