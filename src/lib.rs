@@ -7,71 +7,107 @@ mod de;
 pub use en::*;
 pub use de::*;
 
-use phf::phf_map;
+#[cfg(feature = "mimalloc")]
+#[global_allocator]
+pub static GLOBAL: mimalloc_rs::MiMalloc = mimalloc_rs::MiMalloc;
 
-pub(crate) static CRMAP: phf::Map<char, usize> = phf_map! {
-    'r' => 0,
-    'R' => 1,
-    'Ŕ' => 2,
-    'ŕ' => 3,
-    'Ŗ' => 4,
-    'ŗ' => 5,
-    'Ř' => 6,
-    'ř' => 7,
-    'Ʀ' => 8,
-    'Ȑ' => 9,
-    'ȑ' => 10,
-    'Ȓ' => 11,
-    'ȓ' => 12,
-    'Ɍ' => 13,
-    'ɍ' => 14
-};
-pub(crate) static CCMAP: phf::Map<char, usize> = phf_map! {
-    'c' => 0,
-    'C' => 1,
-    'Ć' => 2,
-    'ć' => 3,
-    'Ĉ' => 4,
-    'ĉ' => 5,
-    'Ċ' => 6,
-    'ċ' => 7,
-    'Č' => 8,
-    'č' => 9,
-    'Ƈ' => 10,
-    'ƈ' => 11,
-    'Ç' => 12,
-    'Ȼ' => 13,
-    'ȼ' => 14
-};
-pub(crate) static CNMAP: phf::Map<char, usize> = phf_map! {
-    'n' => 0,
-    'N' => 1,
-    'Ń' => 2,
-    'ń' => 3,
-    'Ņ' => 4,
-    'ņ' => 5,
-    'Ň' => 6,
-    'ň' => 7,
-    'Ɲ' => 8,
-    'ƞ' => 9,
-    'Ñ' => 10,
-    'Ǹ' => 11,
-    'ǹ' => 12,
-    'Ƞ' => 13,
-    'ȵ' => 14
-};
-pub(crate) static CBMAP: phf::Map<char, usize> = phf_map! {
-    'b' => 0,
-    'B' => 1,
-    'ƀ' => 2,
-    'Ɓ' => 3,
-    'ƃ' => 4,
-    'Ƅ' => 5,
-    'ƅ' => 6,
-    'ß' => 7,
-    'Þ' => 8,
-    'þ' => 9
-};
+#[cfg(feature = "snmalloc")]
+#[global_allocator]
+static ALLOC: snmalloc_rs::SnMalloc = snmalloc_rs::SnMalloc;
+
+macro_rules! gen_map {
+    ($i:expr, $($char:expr => $index:expr),*) => {
+        match $i {
+            $(
+                $char => Some($index)
+            ),*,
+            _ => None
+        }
+    };
+}
+
+#[inline(always)]
+pub(crate) const fn crmap(index: char) -> Option<usize> {
+    gen_map!(
+        index,
+        'r' => 0,
+        'R' => 1,
+        'Ŕ' => 2,
+        'ŕ' => 3,
+        'Ŗ' => 4,
+        'ŗ' => 5,
+        'Ř' => 6,
+        'ř' => 7,
+        'Ʀ' => 8,
+        'Ȑ' => 9,
+        'ȑ' => 10,
+        'Ȓ' => 11,
+        'ȓ' => 12,
+        'Ɍ' => 13,
+        'ɍ' => 14
+    )
+}
+
+#[inline(always)]
+pub(crate) const fn ccmap(index: char) -> Option<usize> {
+    gen_map!(
+        index,
+        'c' => 0,
+        'C' => 1,
+        'Ć' => 2,
+        'ć' => 3,
+        'Ĉ' => 4,
+        'ĉ' => 5,
+        'Ċ' => 6,
+        'ċ' => 7,
+        'Č' => 8,
+        'č' => 9,
+        'Ƈ' => 10,
+        'ƈ' => 11,
+        'Ç' => 12,
+        'Ȼ' => 13,
+        'ȼ' => 14
+    )
+}
+
+#[inline(always)]
+pub(crate) const fn cnmap(index: char) -> Option<usize> {
+    gen_map!(
+        index,
+        'n' => 0,
+        'N' => 1,
+        'Ń' => 2,
+        'ń' => 3,
+        'Ņ' => 4,
+        'ņ' => 5,
+        'Ň' => 6,
+        'ň' => 7,
+        'Ɲ' => 8,
+        'ƞ' => 9,
+        'Ñ' => 10,
+        'Ǹ' => 11,
+        'ǹ' => 12,
+        'Ƞ' => 13,
+        'ȵ' => 14
+    )
+}
+
+#[inline(always)]
+pub(crate) const fn cbmap(index: char) -> Option<usize> {
+    gen_map!(
+        index,
+        'b' => 0,
+        'B' => 1,
+        'ƀ' => 2,
+        'Ɓ' => 3,
+        'ƃ' => 4,
+        'Ƅ' => 5,
+        'ƅ' => 6,
+        'ß' => 7,
+        'Þ' => 8,
+        'þ' => 9
+    )
+}
 
 pub(crate) const CR: &[char; 15] = &[
     'r', 'R', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ʀ', 'Ȑ', 'ȑ', 'Ȓ', 'ȓ', 'Ɍ', 'ɍ',

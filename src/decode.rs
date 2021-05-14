@@ -1,24 +1,19 @@
-use crate::{SB, SC, SNB, SCNB, CRMAP, CCMAP, CNMAP, CBMAP};
+use crate::{SB, SC, SNB, SCNB, crmap, ccmap, cnmap, cbmap};
 
-macro_rules! index_of_and_char_at {
-    ($rcnb:ident, $chars:expr, $index:expr) => {
-        {
-            let char = $chars.get($index);
-            if char.is_none() {
-                Some(&0usize)
-            } else {
-                $rcnb.get(char.unwrap())
-            }
-        }
+macro_rules! map_or {
+    ($opt:expr, $map:expr) => {
+        $opt.map_or(Some(0usize), |c|$map(*c))
     };
 }
 
+#[inline(always)]
 fn decode_byte(chars: &[char]) -> u8 {
     let mut nb = false;
-    let idx = (|| Some([index_of_and_char_at!(CRMAP, chars, 0)?, index_of_and_char_at!(CCMAP, chars, 1)?]))()
+
+    let idx = (|| Some([map_or!(chars.get(0), crmap)?, map_or!(chars.get(1), ccmap)?]))()
         .or_else(|| {
             nb = true;
-            (|| Some([index_of_and_char_at!(CNMAP, chars, 0)?, index_of_and_char_at!(CBMAP, chars, 1)?]))()
+            (|| Some([map_or!(chars.get(0), cnmap)?, map_or!(chars.get(1), cbmap)?]))()
         })
         .expect("not rc/nb");
     let result = if nb { idx[0] * SB as usize + idx[1] } else { idx[0] * SC as usize + idx[1] };
@@ -29,20 +24,26 @@ fn decode_byte(chars: &[char]) -> u8 {
     (if nb { result | 0x80 } else { result }) as u8
 }
 
+#[inline(always)]
 fn decode_short(chars: &[char]) -> usize {
-    let reverse = !CRMAP.contains_key(&chars[0]);
-    let what_is_idx = |order: &[usize; 4]| Some([
-        index_of_and_char_at!(CRMAP, chars, order[0])?,
-        index_of_and_char_at!(CCMAP, chars, order[1])?,
-        index_of_and_char_at!(CNMAP, chars, order[2])?,
-        index_of_and_char_at!(CBMAP, chars, order[3])?
-    ]);
+    let reverse = !crmap(chars[0]).is_some();
+
+    macro_rules! what_is_idx {
+        ($chars:expr, $order0:expr, $order1:expr, $order2:expr, $order3:expr, $msg:expr) => {
+            [
+                map_or!($chars.get($order0), crmap).expect($msg),
+                map_or!($chars.get($order1), ccmap).expect($msg),
+                map_or!($chars.get($order2), cnmap).expect($msg),
+                map_or!($chars.get($order3), cbmap).expect($msg)
+            ]
+        };
+    }
 
     let idx = if !reverse {
-        what_is_idx(&[0, 1, 2, 3])
+        what_is_idx!(chars, 0, 1, 2, 3, "not rcnb")
     } else {
-        what_is_idx(&[2, 3, 0, 1])
-    }.expect("not rcnb");
+        what_is_idx!(chars, 2, 3, 0, 1, "not rcnb")
+    };
 
     let result = idx[0] * SCNB as usize + idx[1] * SNB as usize + idx[2] * SB as usize + idx[3];
 
@@ -54,14 +55,15 @@ fn decode_short(chars: &[char]) -> usize {
 }
 
 pub fn decode(s: &str) -> String {
-    let len = s.chars().count();
+    let vc =  s.chars().collect::<Vec<char>>();
+    let len = vc.len();
     if (len & 1) != 0 {
         panic!("invalid length")
     }
-    let mut v = Vec::with_capacity(len / 2);
+    let mut v = Vec::with_capacity(len);
 
     let mut i = 0;
-    let vc = s.chars().collect::<Vec<char>>();
+
     while i < (len >> 2) {
         let start = i * 4;
         let short = decode_short(&vc[start..start + 4]);

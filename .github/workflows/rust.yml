@@ -19,5 +19,9 @@ jobs:
       - uses: actions-rs/toolchain@v1.0.6
         with:
           toolchain: nightly
+      - name: bench with mimalloc
+        run: RUSTFLAGS="-C target-cpu=native" cargo +nightly bench --package rcnb-rs --test bench --features=mimalloc -- --test-threads=1
+      - name: bench with snmalloc
+        run: RUSTFLAGS="-C target-cpu=native" cargo +nightly bench --package rcnb-rs --test bench --features=snmalloc -- --test-threads=1
       - name: bench
-        run: RUSTFLAGS="-C target-cpu=native" cargo +nightly bench --test bench
+        run: RUSTFLAGS="-C target-cpu=native" cargo +nightly bench --package rcnb-rs --test bench -- --test-threads=1

@@ -1,7 +1,8 @@
-use argh::FromArgs;
-use rcnb_rs::{decode, encode};
-use std::option::Option::Some;
 use std::io::Read;
+
+use argh::FromArgs;
+
+use rcnb_rs::{decode, encode};
 
 #[derive(FromArgs)]
 /// RCNB!

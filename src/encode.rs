@@ -1,52 +1,90 @@
 use crate::{CN, SB, SC, CR, CC, CB, SNB, SCNB};
 
-fn encode_byte(i: u16) -> [char;2] {
+macro_rules! push_char {
+    ($vec:expr, $($item:expr),*) => {
+        $(
+            $vec.push($item);
+        )*
+    };
+}
+
+#[inline(always)]
+fn encode_byte(v: &mut String, mut i: u16) {
     if i > 0xFF {
         panic!("rc/nb overflow")
     }
 
     if i > 0x7F {
-        let i = i & 0x7F;
-        [CN[(i / SB) as usize], CB[(i % SB) as usize]]
+        i = i & 0x7F;
+        push_char!(v, CN[(i / SB) as usize], CB[(i % SB) as usize]);
     } else {
-        [CR[(i / SC) as usize], CC[(i % SC) as usize]]
+        push_char!(v, CR[(i / SC) as usize], CC[(i % SC) as usize]);
     }
 }
 
-fn encode_short(i: u16) -> [char;4] {
+#[inline(always)]
+fn encode_short(v: &mut String, mut i: u16) {
     let mut reverse = false;
-    let mut i = i;
     if i > 0x7FFF {
         reverse = true;
         i = i & 0x7FFF
     }
-    let chars = [
-        CR[(i / SCNB) as usize],
-        CC[(i % SCNB / SNB) as usize],
-        CN[(i % SNB / SB) as usize],
-        CB[(i % SB) as usize],
-    ];
     if reverse {
-        [chars[2], chars[3], chars[0], chars[1]]
+        push_char!(v,
+            CN[(i % SNB / SB) as usize],
+            CB[(i % SB) as usize],
+            CR[(i / SCNB) as usize],
+            CC[(i % SCNB / SNB) as usize]
+        );
     } else {
-        chars
+        push_char!(v,
+            CR[(i / SCNB) as usize],
+            CC[(i % SCNB / SNB) as usize],
+            CN[(i % SNB / SB) as usize],
+            CB[(i % SB) as usize]
+        );
+    }
+}
+
+#[inline(always)]
+fn encode_short_o(mut i: u16) -> [char;4] {
+    let mut reverse = false;
+    if i > 0x7FFF {
+        reverse = true;
+        i = i & 0x7FFF
+    }
+    if reverse {
+        [
+            CN[(i % SNB / SB) as usize],
+            CB[(i % SB) as usize],
+            CR[(i / SCNB) as usize],
+            CC[(i % SCNB / SNB) as usize]
+        ]
+    } else {
+        [
+            CR[(i / SCNB) as usize],
+            CC[(i % SCNB / SNB) as usize],
+            CN[(i % SNB / SB) as usize],
+            CB[(i % SB) as usize]
+        ]
     }
 }
 
 pub fn encode<T: AsRef<[u8]>>(data: T) -> String {
     let data = data.as_ref();
     let len = data.len();
-    let mut vc = Vec::with_capacity(len * 2);
+    let mut vc = String::with_capacity(len * 3);
 
     let mut i = 0;
     while i < (len >> 1) {
-        vc.extend_from_slice(&encode_short(((data[i * 2] as u16) << 8) | data[i * 2 + 1] as u16));
+        encode_short(&mut vc, ((data[i * 2] as u16) << 8) | data[i * 2 + 1] as u16);
         i += 1;
     }
 
     if (data.len() & 1) != 0 {
-        vc.extend_from_slice(&encode_byte(data[len - 1] as u16))
+        encode_byte(&mut vc, data[len - 1] as u16)
     }
 
-    vc.iter().collect::<String>()
+    vc
+    //vc.iter().collect::<String>()
 }
