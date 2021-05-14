@@ -101,17 +101,17 @@ $ rcnb-rs <test.txt
 ```
 
 ## Performance
-[See here](https://github.com/juzi5201314/rcnb-rs/runs/1137919930?check_suite_focus=true#step:4:64)
+[See here](https://github.com/juzi5201314/rcnb-rs/runs/2585150207/)
 ```
-test rcnb_decode_100kib ... bench:   8,722,523 ns/iter (+/- 645,427) = 44 MB/s
-test rcnb_decode_10kib  ... bench:     862,019 ns/iter (+/- 96,099) = 44 MB/s
-test rcnb_decode_1b     ... bench:         105 ns/iter (+/- 11) = 38 MB/s
-test rcnb_decode_1kib   ... bench:      87,963 ns/iter (+/- 8,862) = 43 MB/s
-test rcnb_decode_1mib   ... bench:  89,603,925 ns/iter (+/- 3,345,813) = 44 MB/s
+test rcnb_decode_100kib ... bench:   2,966,972 ns/iter (+/- 12,700) = 129 MB/s
+test rcnb_decode_10kib  ... bench:     287,475 ns/iter (+/- 2,267) = 134 MB/s
+test rcnb_decode_1b     ... bench:          22 ns/iter (+/- 0) = 181 MB/s
+test rcnb_decode_1kib   ... bench:      13,393 ns/iter (+/- 171) = 287 MB/s
+test rcnb_decode_1mib   ... bench:  31,528,558 ns/iter (+/- 1,043,871) = 125 MB/s
 
-test rcnb_encode_100kib ... bench:   2,514,532 ns/iter (+/- 227,809) = 40 MB/s
-test rcnb_encode_10kib  ... bench:     251,022 ns/iter (+/- 25,876) = 40 MB/s
-test rcnb_encode_1b     ... bench:          63 ns/iter (+/- 6) = 15 MB/s
-test rcnb_encode_1kib   ... bench:      25,390 ns/iter (+/- 4,762) = 40 MB/s
-test rcnb_encode_1mib   ... bench:  27,145,590 ns/iter (+/- 2,225,573) = 38 MB/s
+test rcnb_encode_100kib ... bench:   1,324,899 ns/iter (+/- 10,162) = 77 MB/s
+test rcnb_encode_10kib  ... bench:     130,809 ns/iter (+/- 418) = 78 MB/s
+test rcnb_encode_1b     ... bench:          16 ns/iter (+/- 0) = 62 MB/s
+test rcnb_encode_1kib   ... bench:      12,705 ns/iter (+/- 73) = 80 MB/s
+test rcnb_encode_1mib   ... bench:  13,942,205 ns/iter (+/- 436,349) = 75 MB/s
 ```
